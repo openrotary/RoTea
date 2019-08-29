@@ -4,7 +4,7 @@ const app = require('http')
 const io = require('socket.io')(app)
 console.log('Start Server in 4190 port')
 
-io.sockets.on('connection', socket => {
+io.on('connection', socket => {
   console.log('Get client msg')
   socket.emit('news', { hello: 'world' })
   // socket.on('my other event', function(data) {
@@ -31,4 +31,4 @@ class Keeper {
   }
 }
 
-module.exports = Keeper
+module.exports = new Keeper()

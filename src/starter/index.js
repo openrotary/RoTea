@@ -1,8 +1,6 @@
 const puppeteer = require('puppeteer')
-const Keeper = require('../keeper')
+const keeper = require('../keeper')
 const { eventList } = require('../utils')
-
-const keeper = new Keeper()
 
 /**
  * Run the listener.
