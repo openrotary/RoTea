@@ -1,0 +1,18 @@
+{
+  "name": "ro-phantom",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dayjs": "^1.8.16",
+    "puppeteer": "^1.19.0",
+    "rxjs": "^6.5.2",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}

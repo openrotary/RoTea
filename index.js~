@@ -1,0 +1,87 @@
+const puppeteer = require('puppeteer')
+const event = require('./src/utils/event')
+const queue = require('./src/utils/queue')
+
+const options = {
+  url: 'http://127.0.0.1:3000',
+  launchPath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+  viewWidth: 1920,
+  viewHeight: 1080
+}
+
+async function inputCallback(page, info) {
+  const xpath = queue.input.dequeue()
+  if (~xpath) {
+    const stmt = await parser.parseInput(xpath, info)
+    const data = common.formatData(
+      stmt,
+      common.getCurrentDateTime(),
+      'input',
+      xpath
+    )
+
+    // await sender.sendData(data)
+  }
+}
+
+async function bindInputListener(page) {
+  try {
+    // Expose the callback function of the `input` event in Nodejs environment,
+    // when the `input` event is captured, switches back to the Nodejs environment
+    // from the browser environment, and executes the callback function.
+    await page.exposeFunction('inputCallback', info => {
+      ;(async () => {
+        await inputCallback(page, info)
+      })()
+    })
+  } catch (e) {
+    // repeat binding
+    return
+  }
+
+  // register the listener for the `input` event in browser environment
+  await page.evaluateOnNewDocument(input => {
+    document.addEventListener(
+      input.type,
+      e =>
+        inputCallback({
+          targetName: e.target.tagName,
+          eventType: input.type,
+          value: e.target.value,
+          type: e.target.type,
+          d: console.log(e)
+        }),
+      true /* capture */
+    )
+  }, event.input)
+}
+
+;(async () => {
+  const browser = await puppeteer.launch({
+    headless: false,
+    devtools: false,
+    executablePath: options.launchPath,
+    args: [
+      '--start-maximized' // you can also use '--start-fullscreen'
+    ]
+  })
+
+  // get the Page
+  const [page] = await browser.pages()
+
+  // set Listener
+  await bindInputListener(page)
+
+  await page.setViewport({
+    width: options.viewWidth,
+    height: options.viewHeight
+  })
+  await page.goto(options.url, { waitUntil: 'networkidle2' })
+  let el = null
+
+  // el = await page.$x('/html/body/div/div/div/div/div/div[2]/input')
+  // await el[0].type('大奇异恩典', { delay: 100 })
+  // await page.screenshot({ path: 'img/奇异恩典.png' })
+})()
+
+console.log(`Error: Event of input should get a String XPath, but get -1`)
