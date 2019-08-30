@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "dayjs": "^1.8.16",
+    "koa": "^2.8.1",
+    "koa-static": "^5.0.0",
     "puppeteer": "^1.19.0",
     "rxjs": "^6.5.2",
     "socket.io": "^2.2.0"
