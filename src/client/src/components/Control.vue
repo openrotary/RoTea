@@ -6,7 +6,7 @@
         <i
           v-for="item in icons"
           :key="item.name"
-          :class="['icon']"
+          :class="['icon', {disabled: getAllowIcon.includes(item.name)}]"
           :style="{backgroundImage:`url(${getImg(item.name)})`}"
           @click="handleClickIcon(item.name)"
         ></i>
@@ -62,6 +62,7 @@ export default {
       if (!this.logs.length) {
         return this.icons.filter(({ name }) => name !== "play");
       }
+      return this.icons
     }
   },
   filters: {
@@ -87,6 +88,14 @@ export default {
         this.tips.push(data);
       });
     },
+    async handleSave() {
+      const {data} = await this.$http.post('/api/pushLog', {
+        log: this.logs
+      })
+      if(data.success) {
+        console.log('It works.')
+      }
+    },
     handleScreen() {
       const data = { eventType: "$screen", times: Date.now() };
       this.logs.push(data);
@@ -97,8 +106,12 @@ export default {
         case "play":
           this.handleConnectSocket();
           break;
+          case 'save':
+            this.handleSave()
+            break
         case "screen":
           this.handleScreen();
+          break;
         default:
           break;
       }
