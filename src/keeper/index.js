@@ -5,11 +5,7 @@ const io = require('socket.io')(app)
 console.log('Start Server in 4190 port')
 
 io.on('connection', socket => {
-  console.log('Get client msg')
-  socket.emit('news', { hello: 'world' })
-  // socket.on('my other event', function(data) {
-  //   console.log(data)
-  // })
+  console.log('socket连接成功')
 })
 
 class Keeper {
@@ -26,8 +22,8 @@ class Keeper {
       data.xpath = this.xpathCache
     }
     this.keepStack.push(data)
-    io.emit('new', data)
-    console.log(this.keepStack)
+    io.emit('log', data)
+    // console.log(this.keepStack)
   }
 }
 
