@@ -7,13 +7,14 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
-    "dayjs": "^1.8.16",
+    "dayjs": "^1.8.20",
     "koa": "^2.8.1",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
-    "puppeteer": "^1.19.0",
+    "puppeteer": "^2.1.1",
+    "rize": "^0.8.0",
     "rxjs": "^6.5.2",
     "socket.io": "^2.2.0"
   },
